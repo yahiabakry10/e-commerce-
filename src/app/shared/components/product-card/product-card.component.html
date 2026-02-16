@@ -1,0 +1,94 @@
+@if (product(); as data) {
+  <div
+    class="group relative flex flex-col my-bg rounded-lg border border-stone-200/70 hover:border-stone-300 hover:bg-stone-50/40 transition-colors duration-300 animate__animated animate__fadeInUp overflow-hidden"
+  >
+    <div
+      class="relative cursor-pointer aspect-square bg-linear-to-br from-stone-50 to-stone-100/50 group-hover:from-stone-100 group-hover:to-stone-200/60 transition-colors duration-500 flex items-center justify-center p-3 overflow-hidden"
+    >
+      <img
+        [routerLink]="['/product-details/', data._id]"
+        [src]="data.imageCover"
+        [alt]="data.title"
+        class="w-full h-full object-contain transition-opacity duration-500 group-hover:opacity-90"
+      />
+
+      <button
+        (click)="toggleWishlist(data._id)"
+        title="Add to wishlist"
+        [class]="{
+          'bg-slate-900 text-white shadow-lg': isInWishlist(),
+          'bg-white/90 backdrop-blur-sm text-slate-700 hover:bg-white': !isInWishlist(),
+        }"
+        class="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center bg-white/80 text-slate-700 hover:bg-white border border-stone-200/60 transition-colors duration-300 z-10 cursor-pointer"
+      >
+        <i
+          class="text-lg"
+          [class]="isInWishlist() ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"
+        ></i>
+      </button>
+    </div>
+
+    <div class="flex flex-col p-4 grow">
+      <span
+        class="inline-block w-fit max-w-full text-[10px] font-black uppercase tracking-[0.2em] text-[#0071AE] bg-slate-100 px-3 py-1.5 rounded-full mb-3 border border-slate-200/60 truncate"
+      >
+        {{ data.category.name }}
+      </span>
+
+      <h3
+        [routerLink]="['/product-details/', data._id]"
+        class="cursor-pointer text-[15px] leading-snug text-slate-900 mb-2 font-semibold tracking-tight hover:text-[#0071AE] transition-colors line-clamp-1"
+      >
+        {{ data.title }}
+      </h3>
+
+      <div class="flex items-center gap-2 mb-2">
+        <div class="flex items-center gap-0.5 text-[12px]">
+          @for (star of [1, 2, 3, 4, 5]; track $index) {
+            <i
+              class="fa-star transition-colors duration-300"
+              [class]="
+                data.ratingsAverage >= star
+                  ? 'fa-solid text-[#FF6201]'
+                  : 'fa-regular text-stone-300'
+              "
+            ></i>
+          }
+        </div>
+        <span class="text-[12px] text-slate-600 font-medium">
+          {{ data.ratingsAverage }}
+        </span>
+        <span class="text-[11px] text-stone-400"> ({{ data.ratingsQuantity || 0 }}) </span>
+      </div>
+
+      <div class="mt-auto flex flex-col gap-4">
+        <div class="flex items-end justify-between">
+          <div class="flex flex-col gap-2">
+            <div class="flex items-baseline gap-1">
+              <span
+                class="text-2xl font-extrabold text-slate-900 tracking-tight relative after:absolute after:-bottom-1 after:left-0 after:w-6 after:h-0.5 after:bg-slate-900/20"
+              >
+                {{ data.price | currency: 'GBP' : 'symbol' : '1.0-0' }}
+              </span>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              <span class="font-semibold text-[10px] text-emerald-600 uppercase tracking-wide">
+                {{ 'In stock' | translate }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <button
+          (click)="addProductToCart(data._id)"
+          title="Add to cart"
+          class="w-full sm:w-fit flex items-center justify-center gap-2 bg-slate-900 hover:bg-[#0071AE] text-white px-6 py-3 rounded-full font-bold text-[11px] uppercase tracking-[0.18em] transition-all duration-300 cursor-pointer active:scale-95"
+        >
+          {{ 'Add To Cart' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

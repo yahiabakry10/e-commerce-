@@ -1,0 +1,165 @@
+<div class="auth-section-div animate__animated animate__fadeInDown animate__faster">
+  <div class="auth-wrapper-div">
+    <!-- ?===== Auth Header ?===== -->
+    <app-auth-header>
+      <h2 class="text-lg font-medium text-slate-900">{{ 'Checkout' | translate }}</h2>
+      <p class="text-sm text-slate-500">{{ 'Provide your shipping details' | translate }}</p>
+    </app-auth-header>
+
+    <form [formGroup]="checkoutForm">
+      <div formGroupName="shippingAddress">
+        @let shippingAddress = checkoutForm.get('shippingAddress');
+        <div class="mb-4">
+          @let details = shippingAddress?.get('details');
+          <label for="details" class="sr-only">{{ 'Details' | translate }}</label>
+          <div>
+            <textarea
+              id="details"
+              name="details"
+              formControlName="details"
+              [placeholder]="'Details' | translate"
+              class="auth-input"
+              [class]="{
+                'border-red-600': details?.invalid && details?.touched,
+                'border-green-600': details?.valid && details?.touched,
+              }"
+            ></textarea>
+          </div>
+          @if (details?.errors && details?.touched) {
+            <div class="auth-alert animate__animated animate__faster">
+              <i class="fa-solid fa-circle-exclamation text-[11px]"></i>
+              <span class="text-[11px]">
+                @if (details?.getError('required')) {
+                  {{ 'Required' | translate }}
+                }
+              </span>
+            </div>
+          }
+        </div>
+
+        <div class="mb-4">
+          @let phone = shippingAddress?.get('phone');
+          <label for="phone" class="sr-only">{{ 'Phone number' | translate }}</label>
+          <div>
+            <input
+              id="phone"
+              name="phone"
+              formControlName="phone"
+              type="tel"
+              [placeholder]="'Phone number' | translate"
+              class="auth-input"
+              [class]="{
+                'border-green-600': phone?.valid && phone?.touched,
+                'border-red-600': phone?.invalid && phone?.touched,
+              }"
+            />
+          </div>
+          @if (phone?.errors && phone?.touched) {
+            <div class="auth-alert animate__animated animate__faster">
+              <i class="fa-solid fa-circle-exclamation text-[11px]"></i>
+              <span class="text-[11px]">
+                @if (phone?.getError('required')) {
+                  {{ 'Required' | translate }}
+                } @else if (phone?.getError('pattern')) {
+                  {{ 'Invalid Number' | translate }}
+                }
+              </span>
+            </div>
+          }
+        </div>
+
+        <div class="mb-4">
+          @let city = shippingAddress?.get('city');
+          <label for="city" class="sr-only">{{ 'City' | translate }}</label>
+          <div>
+            <input
+              id="city"
+              name="city"
+              formControlName="city"
+              type="text"
+              [placeholder]="'City' | translate"
+              class="auth-input"
+              [class]="{
+                'border-red-600': city?.invalid && city?.touched,
+                'border-green-600': city?.valid && city?.touched,
+              }"
+            />
+          </div>
+          @if (city?.errors && city?.touched) {
+            <div class="auth-alert animate__animated animate__faster">
+              <i class="fa-solid fa-circle-exclamation text-[11px]"></i>
+              <span class="text-[11px]">
+                @if (city?.getError('required')) {
+                  {{ 'Required' | translate }}
+                }
+              </span>
+            </div>
+          }
+        </div>
+
+        <div class="mb-8">
+          @let postalCode = shippingAddress?.get('postalCode');
+          <label for="postalCode" class="sr-only">{{ 'Postal Code' | translate }}</label>
+          <div>
+            <input
+              id="postalCode"
+              name="postalCode"
+              formControlName="postalCode"
+              type="text"
+              [placeholder]="'Postal Code' | translate"
+              [class]="{
+                'border-red-600': postalCode?.invalid && postalCode?.touched,
+                'border-green-600': postalCode?.valid && postalCode?.touched,
+              }"
+              class="auth-input"
+            />
+          </div>
+          @if (postalCode?.errors && postalCode?.touched) {
+            <div class="auth-alert animate__animated animate__faster">
+              <i class="fa-solid fa-circle-exclamation text-[11px]"></i>
+              <span class="text-[11px]">
+                @if (postalCode?.getError('required')) {
+                  {{ 'Required' | translate }}
+                } @else if (postalCode?.getError('pattern')) {
+                  {{ 'Postal code is not valid' | translate }}
+                }
+              </span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-4">
+        <button
+          type="button"
+          class="auth-btn flex items-center justify-center gap-3"
+          (click)="payWithVisa()"
+          [disabled]="checkoutForm.invalid || isVisaLoading()"
+        >
+          @if (isVisaLoading()) {
+            <i class="fas fa-spinner fa-spin"></i>
+            {{ 'Processing...' | translate }}
+          } @else {
+            <i class="fab fa-cc-visa text-xl"></i>
+            {{ 'Pay with visa' | translate }}
+          }
+        </button>
+
+        <button
+          type="button"
+          class="auth-btn flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-900"
+          (click)="payWithCash()"
+          [disabled]="checkoutForm.invalid || isCashLoading()"
+        >
+          @if (isCashLoading()) {
+            <i class="fas fa-spinner fa-spin"></i>
+            {{ 'Placing order...' | translate }}
+          } @else {
+            <i class="fas fa-money-bill-wave text-xl"></i>
+            {{ 'Pay with cash' | translate }}
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

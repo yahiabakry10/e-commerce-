@@ -1,0 +1,179 @@
+<div class="my-bg min-h-screen">
+  <div class="border-b border-stone-200 bg-white">
+    <div class="px-6 lg:px-8 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-[14px] text-[#0F1111]">
+          1-{{ products().length }} of <span class="font-bold">{{ totalRecords() }}</span> results
+        </span>
+      </div>
+
+      <div
+        class="flex items-center gap-2 bg-[#F0F2F2] px-3 py-1.5 rounded-lg border border-stone-300 hover:bg-[#E3E6E6] cursor-pointer transition-colors"
+      >
+        <label class="text-[12px] text-[#0F1111] font-medium">Sort by:</label>
+        <select
+          [value]="currentSort()"
+          (change)="sortProducts($event)"
+          class="bg-transparent border-none text-[12px] font-bold text-[#0F1111] focus:ring-0 cursor-pointer p-0"
+        >
+          <option value="price">Low to High</option>
+          <option value="-price">High to Low</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="px-6 lg:px-8 py-6">
+    <div class="flex flex-col md:flex-row gap-10">
+      <!-- ?===== Mobile Screen ?===== -->
+      <div class="md:hidden animate__animated animate__fadeIn">
+        <div class="flex items-center justify-between border-b border-stone-200 pb-4 mb-6">
+          <h3 class="text-[11px] font-bold uppercase tracking-widest text-slate-900">
+            Browse Collections
+          </h3>
+          <span class="text-[10px] text-stone-500 font-bold uppercase tracking-widest">
+            {{ totalRecords() }} Items
+          </span>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <button
+            (click)="filterByCategory(undefined)"
+            [class]="
+              !categoryId()
+                ? 'bg-[#0071AE] text-white border-slate-700'
+                : 'bg-white text-slate-700 border-stone-200'
+            "
+            class="px-5 py-2.5 text-[10px] font-black uppercase tracking-widest border rounded-full transition-all active:scale-95 shadow-sm"
+          >
+            All
+          </button>
+
+          @for (category of categories(); track category._id) {
+            <button
+              (click)="filterByCategory(category._id)"
+              [class]="
+                categoryId() === category._id
+                  ? 'bg-[#0071AE] text-white border-[#1A1A1A]'
+                  : 'bg-white text-slate-900 border-stone-200'
+              "
+              class="px-5 py-2.5 text-[10px] font-black uppercase tracking-widest border rounded-full transition-all active:scale-95 hover:border-[#1A1A1A]"
+            >
+              {{ category.name }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <aside class="w-64 hidden md:block animate__animated animate__fadeInLeft">
+        <h3 class="text-[14px] font-bold text-slate-900 mb-4 border-b border-stone-200 pb-2">
+          Filters
+        </h3>
+
+        <div class="space-y-4">
+          <div>
+            <h4 class="text-[14px] font-bold text-slate-950 mb-2">Category</h4>
+            <ul class="space-y-1">
+              <li
+                (click)="filterByCategory(undefined)"
+                [class]="!categoryId() ? 'text-[#0071AE] font-bold' : 'text-slate-900'"
+                class="text-[13px] font-medium cursor-pointer hover:text-[#0071AE] transition-colors flex justify-between items-center py-1 px-2"
+              >
+                <span>All Products</span>
+                @if (!categoryId()) {
+                  <span class="w-1.5 h-1.5 bg-[#0071AE] rounded-full"></span>
+                }
+              </li>
+
+              @for (category of categories(); track category._id) {
+                <li
+                  (click)="filterByCategory(category._id)"
+                  [class]="
+                    categoryId() === category._id ? 'text-[#0071AE] font-bold' : 'text-slate-900'
+                  "
+                  class="text-[13px] font-medium cursor-pointer hover:text-[#0071AE] transition-colors flex justify-between items-center py-1 px-2"
+                >
+                  {{ category.name }}
+                  @if (categoryId() === category._id) {
+                    <span class="w-1.5 h-1.5 bg-[#0071AE] rounded-full"></span>
+                  }
+                </li>
+              }
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-[14px] font-bold text-slate-950 mb-2">Brand</h4>
+            <ul class="space-y-1">
+              @for (brand of brands(); track brand._id) {
+                <li>
+                  <label
+                    (click)="filterByBrand(brand._id)"
+                    class="cursor-pointer hover:bg-stone-50 transition-colors py-1.5 px-2 rounded flex items-center gap-2.5 group"
+                  >
+                    <input
+                      type="checkbox"
+                      [checked]="brandId() === brand._id"
+                      class="w-4 h-4 accent-[#0071AE] cursor-pointer rounded focus:ring-2 focus:ring-[#0071AE] focus:ring-offset-1 pointer-events-none"
+                    />
+                    <span
+                      [class]="
+                        brandId() === brand._id ? 'font-bold text-[#0071AE]' : 'text-slate-900'
+                      "
+                      class="text-[13px] font-medium select-none"
+                    >
+                      {{ brand.name }}
+                    </span>
+                  </label>
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+      </aside>
+
+      <main class="flex-1">
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-6"
+        >
+          @for (product of products(); track product._id) {
+            <app-product-card
+              [product]="product"
+              class="animate__animated animate__fadeInUp"
+            ></app-product-card>
+          } @empty {
+            <div class="col-span-full py-24 flex flex-col items-center justify-center text-center">
+              <div class="w-16 h-0.75 bg-[#1A1A1A] mb-6"></div>
+
+              <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">
+                {{ 'No Products Found' | translate }}
+              </h2>
+              <p class="text-stone-500 text-sm md:text-base mb-8 max-w-md">
+                {{ 'Try adjusting your filters or check back later for new arrivals' | translate }}
+              </p>
+
+              <button
+                (click)="filterByCategory(undefined)"
+                class="px-8 py-3 bg-slate-900 text-white font-semibold uppercase tracking-wider rounded-lg hover:bg-[#0071AE] transition-colors cursor-pointer"
+              >
+                {{ 'View All Products' | translate }}
+              </button>
+            </div>
+          }
+        </div>
+
+        <!-- ?===== Pagination ?===== -->
+        <div class="mt-5 flex justify-center">
+          <div class="w-full border-t border-stone-100">
+            <p-paginator
+              (onPageChange)="onPageChange($event)"
+              [first]="first()"
+              [rows]="rowsPerPage()"
+              [totalRecords]="totalRecords()"
+            />
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<section class="my-bg min-h-screen py-20">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8">
+    <div class="relative mb-16 text-center">
+      <h1 class="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight">
+        {{ 'Featured Brands' | translate }}
+      </h1>
+      <div
+        class="mt-6 w-20 h-1 bg-linear-to-r from-transparent via-slate-800 to-transparent mx-auto"
+      ></div>
+      <p class="mt-6 text-slate-600 text-lg max-w-2xl mx-auto">
+        {{ 'Discover premium brands and quality products' | translate }}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-6 justify-items-center">
+      @for (brand of brands(); track brand._id) {
+        <app-brands-card
+          [brand]="brand"
+          class="animate__animated animate__fadeInUp w-full max-w-xs"
+          (click)="navigateToProductsBrands(brand._id)"
+        ></app-brands-card>
+      }
+    </div>
+  </div>
+</section>

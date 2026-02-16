@@ -1,0 +1,40 @@
+<section class="my-bg min-h-screen py-20">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="relative mb-16 text-center">
+      <h1 class="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight">
+        {{ 'Explore Categories' | translate }}
+      </h1>
+      <div
+        class="mt-6 w-20 h-1 bg-linear-to-r from-transparent via-slate-800 to-transparent mx-auto"
+      ></div>
+      <p class="mt-6 text-slate-600 text-lg max-w-2xl mx-auto">
+        {{ 'Browse our curated collection of product categories' | translate }}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+      @for (category of categories(); track category._id) {
+        <div
+          (click)="navigateToProductCategories(category._id)"
+          class="group cursor-pointer bg-white rounded-2xl p-6 border border-stone-200/70 hover:border-slate-300 hover:shadow-xl transition-all duration-300 animate__animated animate__fadeInUp flex flex-col items-center justify-center text-center"
+        >
+          <div
+            class="relative w-20 h-20 md:w-24 md:h-24 mb-4 rounded-full bg-linear-to-br from-slate-100 to-stone-100 group-hover:from-slate-200 group-hover:to-stone-200 transition-all duration-300 flex items-center justify-center overflow-hidden"
+          >
+            <img
+              [src]="category.image"
+              [alt]="category.name"
+              class="w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-300"
+            />
+          </div>
+
+          <h3
+            class="text-sm md:text-base font-semibold text-slate-900 group-hover:text-[#0071AE] transition-colors line-clamp-2"
+          >
+            {{ category.name }}
+          </h3>
+        </div>
+      }
+    </div>
+  </div>
+</section>

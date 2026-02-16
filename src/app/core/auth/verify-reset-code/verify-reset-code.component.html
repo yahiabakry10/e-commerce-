@@ -1,0 +1,53 @@
+<div class="auth-section-div animate__animated animate__fadeInDown animate__faster">
+  <div class="auth-wrapper-div">
+    <!-- ?===== Auth Header ?===== -->
+    <app-auth-header>
+      <h2 class="text-lg font-medium text-slate-900">{{ 'Confirm Reset Code' | translate }}</h2>
+      <p class="text-sm text-slate-500">
+        {{ 'Enter the code sent to your email address' | translate }}
+      </p>
+    </app-auth-header>
+
+    <form [formGroup]="verifyCodeForm" (ngSubmit)="onSubmitResetCodeForm()">
+      <div class="mb-8">
+        @let code = verifyCodeForm.get('resetCode');
+        <label for="code" class="sr-only">{{ 'Reset Code' | translate }}</label>
+        <div>
+          <input
+            id="code"
+            name="code"
+            formControlName="resetCode"
+            type="text"
+            [placeholder]="'Reset Code' | translate"
+            [class]="{
+              'border-red-600': code?.invalid && code?.touched,
+              'border-green-600': code?.valid && code?.touched,
+            }"
+            class="auth-input"
+          />
+        </div>
+        @if (code?.errors && code?.touched) {
+          <div class="auth-alert animate__animated animate__faster">
+            <i class="fa-solid fa-circle-exclamation text-[11px]"></i>
+            <span class="text-[11px]">
+              @if (code?.getError('required')) {
+                {{ 'Required' | translate }}
+              } @else if (code?.getError('pattern')) {
+                {{ 'Reset code is not valid' | translate }}
+              }
+            </span>
+          </div>
+        }
+      </div>
+
+      <button [disabled]="verifyCodeForm.invalid || isLoading()" type="submit" class="auth-btn">
+        @if (isLoading()) {
+          <i class="fa-solid fa-spinner fa-spin"></i>
+          Verifying...
+        } @else {
+          {{ 'Verify Code' | translate }}
+        } 
+      </button>
+    </form>
+  </div>
+</div>

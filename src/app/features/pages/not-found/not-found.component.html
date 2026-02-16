@@ -1,0 +1,30 @@
+<app-navbar [isUser]="isUserLoggedIn()"></app-navbar>
+<div class="min-h-screen my-bg flex items-center justify-center px-4 py-16">
+  <div class="max-w-2xl w-full text-center">
+  
+    <div class="mb-8">
+      <img 
+        src="/images/404-error.svg" 
+        alt="404 Not Found" 
+        class="w-full max-w-md mx-auto h-auto"
+      />
+    </div>
+
+    <h1 class="text-5xl font-bold text-slate-900 mb-3">{{'Oops!' | translate}}</h1>
+    <h2 class="text-2xl font-semibold text-slate-700 mb-4">{{'Page Not Found' | translate}}</h2>
+    <p class="text-slate-600 mb-8 max-w-md mx-auto">
+      {{ "We can't seem to find the page you're looking for. Let's get you back on track" | translate }}
+    </p>
+
+    <div class="flex justify-center">
+      <a 
+        routerLink="/home" 
+        class="px-8 py-3 bg-[#0071AE] text-white font-semibold rounded-full hover:bg-[#0071AE]/90 transition-colors flex items-center justify-center gap-2"
+      >
+        <i class="fa-solid fa-house"></i>
+        {{ 'Back to Home' | translate }}
+      </a>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer> 

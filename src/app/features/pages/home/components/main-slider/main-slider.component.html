@@ -1,0 +1,22 @@
+<section class="pb-16">
+  @if (slider().length) {
+    <div class="hero-slider-wrapper">
+      <p-carousel
+        [value]="slider()"
+        [numVisible]="1"
+        [numScroll]="1"
+        [circular]="true"
+        [autoplayInterval]="4000"
+        [responsiveOptions]="responsiveOptions()"
+        [showIndicators]="false"
+        [showNavigators]="true"
+      >
+        <ng-template let-slide pTemplate="item">
+          <div>
+            <img [src]="slide.image" [alt]="'Banner ' + slide.id" class="w-full" />
+          </div>
+        </ng-template>
+      </p-carousel>
+    </div>
+  }
+</section>

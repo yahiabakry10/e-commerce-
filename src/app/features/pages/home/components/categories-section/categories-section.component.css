@@ -1,0 +1,22 @@
+:host ::ng-deep .p-carousel .p-carousel-indicators {
+  padding: 1rem;
+}
+
+:host ::ng-deep .p-carousel .p-carousel-indicator button {
+  width: 2rem;
+  height: 0.5rem;
+  border-radius: 0.25rem;
+  margin-top: 8px;
+}
+
+:host ::ng-deep .p-carousel-indicator-active .p-carousel-indicator-button {
+  background-color: #3b82f6;
+}
+
+:host ::ng-deep .p-button-text.p-button-secondary {
+  color: black;
+}
+
+:host ::ng-deep .p-button-text.p-button-secondary:hover {
+  color: #3b82f6;
+}

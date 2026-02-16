@@ -1,0 +1,211 @@
+<div class="auth-section-div animate__animated animate__fadeInDown animate__faster">
+  <div class="auth-wrapper-div">
+    <!-- ?===== Auth Header ?===== -->
+    <app-auth-header>
+      <h2 class="text-lg font-medium text-slate-900">{{ 'Create your account' | translate }}</h2>
+      <p class="text-sm text-slate-500">
+        {{ 'Elevate your experience. Join us' | translate }}
+      </p>
+    </app-auth-header>
+
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <div class="mb-4">
+        @let name = registerForm.get('name');
+        <label for="name" class="sr-only">{{ 'Full Name' | translate }}</label>
+        <div>
+          <input
+            id="name"
+            name="name"
+            formControlName="name"
+            type="text"
+            [placeholder]="'Full name' | translate"
+            [class]="{
+              'border-green-600': name?.valid && name?.touched,
+              'border-red-600': name?.invalid && name?.touched,
+            }"
+            class="auth-input"
+          />
+        </div>
+        @if (name?.errors && name?.touched) {
+          <div class="auth-alert animate__animated animate__faster">
+            <i class="fa-solid fa-circle-exclamation text-[11px]"></i>
+            <span class="text-[11px]">
+              @if (name?.getError('required')) {
+                {{ 'Required' | translate }}
+              } @else if (name?.getError('minlength')) {
+                {{ 'Too Short' | translate }}
+              } @else if (name?.getError('maxlength')) {
+                {{ 'Too Long' | translate }}
+              }
+            </span>
+          </div>
+        }
+      </div>
+
+      <div class="mb-4">
+        @let email = registerForm.get('email');
+        <label for="email" class="sr-only">{{ 'Email address' | translate }}</label>
+        <div>
+          <input
+            id="email"
+            name="email"
+            formControlName="email"
+            type="email"
+            [placeholder]="'Email address' | translate"
+            [class]="{
+              'border-green-600': email?.valid && email?.touched,
+              'border-red-600': email?.invalid && email?.touched,
+            }"
+            class="auth-input"
+          />
+        </div>
+        @if (email?.errors && email?.touched) {
+          <div class="auth-alert animate__animated animate__faster">
+            <i class="fa-solid fa-circle-exclamation text-[11px]"></i>
+            <span class="text-[11px]">
+              @if (email?.getError('required')) {
+                {{ 'Required' | translate }}
+              } @else if (email?.getError('email')) {
+                {{ 'Invalid Format' | translate }}
+              }
+            </span>
+          </div>
+        }
+      </div>
+
+      <div class="mb-4">
+        @let password = registerForm.get('password');
+        <label for="password" class="sr-only">{{ 'Password' | translate }}</label>
+        <div class="relative">
+          <input
+            id="password"
+            name="password"
+            formControlName="password"
+            [type]="isTypeText() ? 'text' : 'password'"
+            [placeholder]="'Password' | translate"
+            [class]="{
+              'border-green-600': password?.valid && password?.touched,
+              'border-red-600': password?.invalid && password?.touched,
+            }"
+            class="auth-input"
+          />
+          @if (isTypeText()) {
+            <i
+              class="fa-solid fa-eye absolute top-1/2 -translate-y-1/2 end-3 cursor-pointer text-gray-400"
+              (click)="isTypeText.set(false)"
+            ></i>
+          } @else {
+            <i
+              class="fa-solid fa-eye-slash absolute top-1/2 -translate-y-1/2 end-3 cursor-pointer text-gray-400"
+              (click)="isTypeText.set(true)"
+            ></i>
+          }
+        </div>
+        @if (password?.errors && password?.touched) {
+          <div class="auth-alert animate__animated animate__faster">
+            <i class="fa-solid fa-circle-exclamation text-[11px]"></i>
+            <span class="text-[11px]">
+              @if (password?.getError('required')) {
+                {{ 'Required' | translate }}
+              } @else if (password?.getError('pattern')) {
+                {{ '8+ chars, 1 letter, 1 number' | translate }}
+              }
+            </span>
+          </div>
+        }
+      </div>
+
+      <div class="mb-4">
+        @let rePassword = registerForm.get('rePassword');
+        <label for="rePassword" class="sr-only">{{ 'Confirm Password' | translate }}</label>
+        <div class="relative">
+          <input
+            id="rePassword"
+            name="rePassword"
+            formControlName="rePassword"
+            [type]="isTypeText2() ? 'text' : 'password'"
+            [placeholder]="'Confirm password' | translate"
+            [class]="{
+              'border-green-600': rePassword?.valid && rePassword?.touched,
+              'border-red-600':
+                (rePassword?.invalid || registerForm.getError('mismatch')) && rePassword?.touched,
+            }"
+            class="auth-input"
+          />
+          @if (isTypeText2()) {
+            <i
+              class="fa-solid fa-eye absolute top-1/2 -translate-y-1/2 end-3 cursor-pointer text-gray-400"
+              (click)="isTypeText2.set(false)"
+            ></i>
+          } @else {
+            <i
+              class="fa-solid fa-eye-slash absolute top-1/2 -translate-y-1/2 end-3 cursor-pointer text-gray-400"
+              (click)="isTypeText2.set(true)"
+            ></i>
+          }
+        </div>
+        @if ((rePassword?.errors || registerForm.getError('mismatch')) && rePassword?.touched) {
+          <div class="auth-alert animate__animated animate__faster">
+            <i class="fa-solid fa-circle-exclamation text-[11px]"></i>
+            <span class="text-[11px]">
+              @if (rePassword?.getError('required')) {
+                {{ 'Required' | translate }}
+              } @else if (registerForm.getError('mismatch')) {
+                {{ "Passwords don't match" | translate }}
+              }
+            </span>
+          </div>
+        }
+      </div>
+
+      <div class="mb-8">
+        @let phone = registerForm.get('phone');
+        <label for="phone" class="sr-only">{{ 'Phone Number' | translate }}</label>
+        <div>
+          <input
+            id="phone"
+            name="phone"
+            formControlName="phone"
+            type="tel"
+            [placeholder]="'Phone number' | translate"
+            [class]="{
+              'border-green-600': phone?.valid && phone?.touched,
+              'border-red-600': phone?.invalid && phone?.touched,
+            }"
+            class="auth-input"
+          />
+        </div>
+        @if (phone?.errors && phone?.touched) {
+          <div class="auth-alert animate__animated animate__faster">
+            <i class="fa-solid fa-circle-exclamation text-[11px]"></i>
+            <span class="text-[11px]">
+              @if (phone?.getError('required')) {
+                {{ 'Required' | translate }}
+              } @else if (phone?.getError('pattern')) {
+                {{ 'Invalid Number' | translate }}
+              }
+            </span>
+          </div>
+        }
+      </div>
+
+      <button [disabled]="registerForm.invalid || isLoading()" type="submit" class="auth-btn">
+        @if (isLoading()) {
+          <i class="fa-solid fa-spinner fa-spin"></i>
+          Processing...
+        } @else {
+          {{ 'Register' | translate }}
+        }
+      </button>
+    </form>
+
+    <p class="text-sm text-slate-500 mt-6 text-center">
+      {{ 'Already have an account?' | translate }}
+      <a
+        routerLink="/login"
+        class="text-[#0071AE] font-bold hover:underline hover:text-slate-950"
+        >{{ 'Login' | translate }}</a
+      >
+    </p>
+  </div>
+</div>

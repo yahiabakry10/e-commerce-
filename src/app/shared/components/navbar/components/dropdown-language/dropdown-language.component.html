@@ -1,0 +1,52 @@
+<!-- Language Switcher Dropdown -->
+<div class="relative inline-block text-left">
+  <!-- Trigger Button -->
+  <button
+    type="button"
+    class="inline-flex items-center gap-2 rounded-sm border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm transition"
+    (click)="toggleDropdown()"
+  >
+
+    <!-- Selected Language -->
+    <span class="text-start uppercase">{{ selectedLanguage.code }}</span>
+
+    <!-- Chevron Icon -->
+    <svg
+      class="h-4 w-4 transition-transform"
+      [class.rotate-180]="isOpen()"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+    </svg>
+  </button>
+
+  <!-- Dropdown Menu -->
+  @if (isOpen()) {
+    <div
+      class="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-sm border border-gray-200 bg-white shadow-lg"
+    >
+      <div class="py-1">
+        <!-- Language Options -->
+        @for (language of languages; track $index) {
+          <button
+            type="button"
+            class="flex w-full items-center gap-3 px-4 py-2 text-sm text-gray-700 font-semibold cursor-pointer"
+            [class.bg-[#0071AE]]="language.code === selectedLanguage.code"
+            [class.text-white]="language.code === selectedLanguage.code"
+            (click)="selectLanguage(language)"
+          >
+            <!-- Language Name -->
+            <span class="flex-1 text-left">{{ language.name }}</span>
+          </button>
+        }
+      </div>
+    </div>
+  }
+</div>
+
+<!-- Backdrop (Click Outside to Close) -->
+@if (isOpen()) {
+  <div class="fixed inset-0 z-0" (click)="closeDropdown()"></div>
+}

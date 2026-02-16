@@ -1,0 +1,15 @@
+:host ::ng-deep .p-icon {
+    width: 20px;
+    height: 20px;
+}
+
+@media (min-width: 768px) {
+    :host ::ng-deep .p-icon {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+:host ::ng-deep .p-button-text.p-button-secondary, :host ::ng-deep .p-button-text.p-button-secondary:hover {
+    color: #0f172a;
+}

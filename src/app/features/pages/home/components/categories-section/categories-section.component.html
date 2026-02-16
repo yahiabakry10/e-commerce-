@@ -1,0 +1,29 @@
+<section class="py-16">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <app-header>{{ 'Popular Categories' | translate }}</app-header>
+
+    @if (categories().length) {
+      <div class="category-slider-wrapper">
+        <p-carousel 
+          [value]="categories()" 
+          [numVisible]="6" 
+          [numScroll]="1" 
+          [circular]="true"
+          [autoplayInterval]="4000"
+          [responsiveOptions]="responsiveOptions()"
+          [showIndicators]="true"
+          [showNavigators]="true"
+        >
+          <ng-template let-category pTemplate="item">
+            <div class="px-2">
+              <app-category-card
+                [category]="category"
+                (click)="navigateToProductCategories(category._id)"
+              />
+            </div>
+          </ng-template>
+        </p-carousel>
+      </div>
+    }
+  </div>
+</section>
