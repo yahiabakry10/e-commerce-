@@ -81,7 +81,6 @@ export class ChangeMyPasswordComponent implements OnInit {
       const changePassData = this.changePasswordForm.value;
       this.authSubscription = this.authService.updateLoggedUserPassword(changePassData).subscribe({
         next: (res) => {
-          console.log(res);
           this.isLoading.set(false);
           localStorage.setItem('userToken', res.token);
           this.authService.decodeUserData();

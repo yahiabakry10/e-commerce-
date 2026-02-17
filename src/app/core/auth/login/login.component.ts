@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { Signindata } from '../../../shared/models/signin/signin.interface';
@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly activatedRoute = inject(ActivatedRoute);
 
   // ================ Form ===================== //
   loginForm!: FormGroup;
@@ -54,9 +55,10 @@ export class LoginComponent implements OnInit {
           this.isLoading.set(false);
           localStorage.setItem('userToken', res.token);
           this.authService.decodeUserData();
-          this.router.navigate(['/home']).then(() => {
-            this.loginForm.reset();
-          });
+
+          // Check for returnUrl
+          const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/home';
+          this.router.navigate([returnUrl]);
         },
         error: () => {
           this.isLoading.set(false);

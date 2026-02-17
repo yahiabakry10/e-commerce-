@@ -1,9 +1,11 @@
 import {
   Component,
+  computed,
   effect,
   inject,
   OnInit,
   PLATFORM_ID,
+  Signal,
   signal,
   WritableSignal,
 } from '@angular/core';
@@ -12,21 +14,25 @@ import { isPlatformBrowser } from '@angular/common';
 import { WishlistData } from './models/wishlist-data/wishlist-data.interface';
 import { ProductCardComponent } from '../../../shared/components/product-card/product-card.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { AuthService } from '../../../core/services/auth-service/auth.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-wishlist',
-  imports: [ProductCardComponent, TranslatePipe],
+  imports: [ProductCardComponent, TranslatePipe, RouterLink],
   templateUrl: './wishlist.component.html',
   styleUrl: './wishlist.component.css',
 })
 export class WishlistComponent implements OnInit {
   // ===== Services inject ===== //
   private readonly wishlistService = inject(WishlistService);
+  private readonly authService = inject(AuthService);
   private readonly platformId = inject(PLATFORM_ID);
 
   // ===== signals ===== //
   wishlist_List: WritableSignal<WishlistData[]> = signal<WishlistData[]>([]);
   wishlistItems: WritableSignal<number> = signal<number>(0);
+  isUserLoggedIn: Signal<boolean> = computed(() => !!this.authService.userData());
 
   constructor() {
     effect(() => {
@@ -40,8 +46,7 @@ export class WishlistComponent implements OnInit {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const token = localStorage.getItem('userToken');
-      if (token) {
+      if (this.authService.userData()) {
         this.getLoggedUserWishlist();
       }
     }

@@ -3,7 +3,6 @@ import {
   computed,
   ElementRef,
   inject,
-  input,
   OnInit,
   PLATFORM_ID,
   Signal,
@@ -19,6 +18,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { WishlistService } from '../../../features/pages/wishlist/services/wishlist-service/wishlist.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DropdownLanguageComponent } from './components/dropdown-language/dropdown-language.component';
+import { AuthService } from '../../../core/services/auth-service/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -31,11 +31,12 @@ export class NavbarComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly cartService = inject(CartService);
   private readonly wishlistService = inject(WishlistService);
+  private readonly authService = inject(AuthService);
   private readonly platformId = inject(PLATFORM_ID);
 
   //=== signals ===//
   isDropdownMenuOpened: WritableSignal<boolean> = signal<boolean>(false);
-  isUser = input<boolean>(false);
+  isUser = computed(() => !!this.authService.userData());
   isOpened = signal<boolean>(false);
   collapseMenu = viewChild<ElementRef>('collapseMenu');
   menuHeight = signal<number>(0);
@@ -104,6 +105,9 @@ export class NavbarComponent implements OnInit {
 
   signOut(): void {
     localStorage.removeItem('userToken');
+    this.authService.userData.set(null);
+    this.cartService.cartCount.set(0);
+    this.wishlistService.wishlistCount.set(0);
     this.router.navigate(['/login']);
   }
 }

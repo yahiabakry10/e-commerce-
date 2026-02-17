@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { ProductsData } from '../../models/products/products-data.interface';
 import { RouterLink } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';

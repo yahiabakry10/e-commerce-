@@ -7,9 +7,11 @@
         >
           {{ 'Wishlist' | translate }}
         </h1>
-        <span class="text-sm md:text-base lg:text-lg font-semibold capitalize text-black"
-          >{{ wishlistItems() }} {{ 'items' | translate }}</span
-        >
+        @if (isUserLoggedIn() && wishlist_List().length > 0) {
+          <span class="text-sm md:text-base lg:text-lg font-semibold capitalize text-black"
+            >{{ wishlistItems() }} {{ 'items' | translate }}</span
+          >
+        }
       </div>
     </div>
 
@@ -20,17 +22,56 @@
         <app-product-card [product]="wishlist"></app-product-card>
       } @empty {
         <div
-          class="col-span-full flex flex-col items-center justify-center text-center py-16 md:py-20 animate__animated animate__fadeIn"
+          class="col-span-full flex flex-col items-center justify-center text-center py-8 animate__animated animate__fadeIn"
         >
-          <div class="w-48 sm:w-56 md:w-60 mb-8">
-            <img src="/images/wishlist.svg" alt="Empty Cart" class="w-full" />
+          <div
+            class="w-24 h-24 md:w-28 md:h-28 mb-6 rounded-full bg-slate-100 flex items-center justify-center"
+          >
+            <i class="fas fa-heart text-4xl md:text-5xl text-slate-400"></i>
           </div>
-          <h2 class="text-xl md:text-2xl font-medium text-slate-900 mb-2 px-4">
-            {{ 'Your wishlist is empty' | translate }}
-          </h2>
-          <p class="text-sm md:text-base text-slate-700 px-4">
-            {{ 'Save items you love to find them easily later' | translate }}
-          </p>
+          <div class="mb-8 text-center px-4">
+            <h2 class="text-xl md:text-2xl font-medium text-slate-900 mb-2">
+              {{ 'Your wishlist is empty' | translate }}
+            </h2>
+            @if (!isUserLoggedIn()) {
+              <p class="text-sm md:text-base text-stone-600 mb-8 leading-relaxed">
+                {{ 'Sign in to save your favorite items and access them anytime' | translate }}
+              </p>
+              <div class="mb-4">
+                <button
+                  routerLink="/login"
+                  [queryParams]="{ returnUrl: '/wishlist' }"
+                  class="px-6 py-2.5 bg-slate-900 text-white rounded-full font-semibold text-sm md:text-base hover:bg-[#0071AE] transition-all active:scale-95 cursor-pointer shadow-md hover:shadow-lg"
+                >
+                  <i class="fas fa-sign-in-alt me-2 rtl:rotate-180"></i>
+                  {{ 'Log in' | translate }}
+                </button>
+              </div>
+              <p class="text-xs text-stone-500">
+                {{ 'or' | translate }}
+              </p>
+              <button
+                routerLink="/products"
+                class="text-sm text-[#0071AE] hover:text-slate-900 font-medium mt-2 transition-colors cursor-pointer"
+              >
+                {{ 'Continue browsing products →' | translate }} 
+              </button>
+            } @else {
+              <p class="text-sm md:text-base text-stone-600 mb-8">
+                {{
+                  'Start building your collection of favorites'
+                    | translate
+                }}
+              </p>
+              <button
+                routerLink="/products"
+                class="px-6 md:px-8 py-2.5 md:py-3 bg-slate-900 text-white rounded-full font-semibold text-sm md:text-base hover:bg-[#0071AE] transition-all active:scale-95 cursor-pointer shadow-md hover:shadow-lg"
+              >
+                <i class="fas fa-heart mr-2"></i>
+                {{ 'Browse Products' | translate }}
+              </button>
+            }
+          </div>
         </div>
       }
     </div>

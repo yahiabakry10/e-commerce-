@@ -12,13 +12,4 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './not-found.component.html',
   styleUrl: './not-found.component.css',
 })
-export class NotFoundComponent {
-  private readonly location = inject(Location);
-  private readonly authService = inject(AuthService);
-
-  isUserLoggedIn: Signal<boolean> = computed(() => this.authService.isLoggedIn());
-
-  goBack() {
-    this.location.back();
-  }
-}
+export class NotFoundComponent {}

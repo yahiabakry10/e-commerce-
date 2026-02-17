@@ -1,9 +1,19 @@
-import { Component, inject, OnInit, PLATFORM_ID, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  OnInit,
+  PLATFORM_ID,
+  Signal,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { CartService } from './services/cart-service/cart.service';
 import { CartDetails } from './models/cart-details/cart-details.interface';
 import { CurrencyPipe, isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { AuthService } from '../../../core/services/auth-service/auth.service';
 
 @Component({
   selector: 'app-cart',
@@ -14,16 +24,17 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class CartComponent implements OnInit {
   // ===== Services Inject ===== //
   private readonly cartService = inject(CartService);
+  private readonly authService = inject(AuthService);
   private readonly platformId = inject(PLATFORM_ID);
 
   // ===== signals ===== //
   cartList: WritableSignal<CartDetails> = signal<CartDetails>({} as CartDetails);
+  isUserLoggedIn: Signal<boolean> = computed(() => !!this.authService.userData());
 
   // ===== Methods ===== //
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const token = localStorage.getItem('userToken');
-      if (token) {
+      if (this.authService.userData()) {
         this.getLoggedUserCart();
       }
     }
@@ -33,7 +44,6 @@ export class CartComponent implements OnInit {
     this.cartService.getLoggedUserCart().subscribe((res) => {
       if (res.status === 'success') {
         this.cartList.set(res.data);
-        console.log(this.cartList());
       }
     });
   }

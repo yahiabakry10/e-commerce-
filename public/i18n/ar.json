@@ -101,5 +101,11 @@
   "Description": "الوصف",
   "Shop": "تسوق",
   "Secure checkout powered by Stripe": "دفع آمن مدعوم من Stripe",
-  "Total Amount": "إجمالي المبلغ"
+  "Total Amount": "إجمالي المبلغ",
+  "Sign in to save your favorite items and access them anytime": "سجل دخولك لحفظ قطعك المفضلة والوصول إليها في أي وقت",
+  "or": "أو",
+  "Continue browsing products →": "استمر في تصفح المنتجات ←",
+  "Start building your collection of favorites": "ابدأ في بناء مجموعتك الخاصة من القطع المفضلة",
+  "Browse Products": "تصفح المنتجات",
+  "Sign in to view your cart and start shopping with saved items": "سجل دخولك لاستعراض سلة التسوق ومتابعة اختيار قطعك المفضلة"
 }

@@ -3,7 +3,7 @@ import { authGuard } from './core/guards/auth/auth-guard';
 import { guestGuard } from './core/guards/guest/guest-guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   {
     path: '',
     loadComponent: () =>
@@ -56,7 +56,6 @@ export const routes: Routes = [
       import('../app/core/layouts/components/user-layout/user-layout.component').then(
         (c) => c.UserLayoutComponent,
       ),
-    canActivate: [authGuard],
     children: [
       {
         path: 'home',
@@ -99,9 +98,16 @@ export const routes: Routes = [
         title: 'Cart',
       },
       {
+        path: 'wishlist',
+        loadComponent: () =>
+          import('./features/pages/wishlist/wishlist.component').then((c) => c.WishlistComponent),
+        title: 'Wishlist',
+      },
+      {
         path: 'checkout/:id',
         loadComponent: () =>
           import('./features/pages/checkout/checkout.component').then((c) => c.CheckoutComponent),
+        canActivate: [authGuard],
         title: 'Checkout',
       },
       {
@@ -110,6 +116,7 @@ export const routes: Routes = [
           import('./features/pages/allorders/allorders.component').then(
             (c) => c.AllordersComponent,
           ),
+        canActivate: [authGuard],
         title: 'Orders',
       },
       {
@@ -118,13 +125,8 @@ export const routes: Routes = [
           import('./features/pages/change-my-password/change-my-password.component').then(
             (c) => c.ChangeMyPasswordComponent,
           ),
+        canActivate: [authGuard],
         title: 'Change Password',
-      },
-      {
-        path: 'wishlist',
-        loadComponent: () =>
-          import('./features/pages/wishlist/wishlist.component').then((c) => c.WishlistComponent),
-        title: 'Wishlist',
       },
     ],
   },

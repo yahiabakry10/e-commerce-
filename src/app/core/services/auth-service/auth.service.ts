@@ -42,7 +42,6 @@ export class AuthService {
 
   // ===== Signals ===== //
   userData: WritableSignal<UserData | null> = signal<UserData | null>(null);
-  isLoggedIn: Signal<boolean> = computed(() => !!this.userData());
 
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
@@ -65,7 +64,6 @@ export class AuthService {
       try {
         const decoded: UserData = jwtDecode(token);
         this.userData.set(decoded);
-        console.log('Decoded User Data:', this.userData());
       } catch (error) {
         console.error('Error decoding user data:', error);
         this.logout(); // Clear invalid token and user data

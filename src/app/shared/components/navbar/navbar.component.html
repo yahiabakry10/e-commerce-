@@ -15,18 +15,16 @@
       </div>
 
       <ul class="hidden md:flex items-center space-x-1">
-        @if (isUser()) {
-          @for (navLink of navLinks(); track navLink.path) {
-            <li class="animate__animated animate__backInLeft">
-              <a
-                [routerLink]="navLink.path"
-                routerLinkActive="active-link"
-                class="px-4.5 text-[12px] text-slate-500 font-bold uppercase tracking-widest transition-all duration-300 hover:text-slate-950"
-              >
-                {{ navLink.name | translate }}
-              </a>
-            </li>
-          }
+        @for (navLink of navLinks(); track navLink.path) {
+          <li class="animate__animated animate__backInLeft">
+            <a
+              [routerLink]="navLink.path"
+              routerLinkActive="active-link"
+              class="px-4.5 text-[12px] text-slate-500 font-bold uppercase tracking-widest transition-all duration-300 hover:text-slate-950"
+            >
+              {{ navLink.name | translate }}
+            </a>
+          </li>
         }
       </ul>
 
@@ -134,18 +132,16 @@
     [style.height.px]="menuHeight()"
   >
     <ul #collapseMenu class="px-6 py-8 flex flex-col gap-3">
-      @if (isUser()) {
-        @for (navLink of navLinks(); track navLink.path) {
-          <li (click)="closeMenu()">
-            <a
-              [routerLink]="navLink.path"
-              routerLinkActive="active-link"
-              class="block px-4 py-3 text-[11px] font-black uppercase tracking-widest text-slate-500 rounded-md"
-            >
-              {{ navLink.name | translate }}
-            </a>
-          </li>
-        }
+      @for (navLink of navLinks(); track navLink.path) {
+        <li (click)="closeMenu()">
+          <a
+            [routerLink]="navLink.path"
+            routerLinkActive="active-link"
+            class="block px-4 py-3 text-[11px] font-black uppercase tracking-widest text-slate-500 rounded-md"
+          >
+            {{ navLink.name | translate }}
+          </a>
+        </li>
       }
 
       <div class="pt-4 border-t border-stone-200 flex flex-col">

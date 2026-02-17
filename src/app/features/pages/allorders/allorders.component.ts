@@ -25,7 +25,6 @@ export class AllordersComponent implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       this.authService.decodeUserData();
       const userId = this.authService.userData()?.id;
-      console.log(userId);
       if (userId) {
         this.getUserOrders(userId);
       }
@@ -36,7 +35,6 @@ export class AllordersComponent implements OnInit {
     this.cartService.getUserOrders(id).subscribe({
       next: (res) => {
         this.allordersList.set(res);
-        console.log(this.allordersList());
       },
     });
   }
